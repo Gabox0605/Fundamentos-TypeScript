@@ -11,4 +11,4 @@ export class Negociacion {
     get total() : number {
         return this.cantidad * this.valor;
     }
-}
+}     
