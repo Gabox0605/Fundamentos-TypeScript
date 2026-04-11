@@ -6,7 +6,7 @@ import { DiasSemana } from "../enums/dias-semanas.js";
 export class NegociacionController {
     constructor() {
         this.negociaciones = new Negociaciones();
-        this.negociacionesView = new NegociacionesView('#negociacionesView');
+        this.negociacionesView = new NegociacionesView('#negociacionesView', true);
         this.mensajeView = new MensajeView('#mensajeView');
         this.inputFecha = document.querySelector('#fecha');
         this.inputCantidad = document.querySelector('#cantidad');
@@ -14,7 +14,7 @@ export class NegociacionController {
         this.negociacionesView.update(this.negociaciones);
     }
     agrega() {
-        const negociacion = this.crearNegociacion();
+        const negociacion = Negociacion.crearNegociacion(this.inputFecha.value, this.inputCantidad.value, this.inputValor.value);
         if (!this.esDiaHabil(negociacion.fecha)) {
             this.mensajeView.update('Solo se pueden agregar negociaciones en días hábiles');
             return;
@@ -25,13 +25,6 @@ export class NegociacionController {
     }
     esDiaHabil(fecha) {
         return fecha.getDay() > DiasSemana.DOMINGO && fecha.getDay() < DiasSemana.SABADO;
-    }
-    crearNegociacion() {
-        const regexp = /-/g;
-        const fecha = this.inputFecha.value.replace(regexp, ',');
-        const cantidad = parseInt(this.inputCantidad.value);
-        const valor = parseFloat(this.inputValor.value);
-        return new Negociacion(new Date(fecha), cantidad, valor);
     }
     limpiaFormulario() {
         this.inputFecha.value = '';
